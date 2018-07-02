@@ -1,32 +1,27 @@
+// canvas.js
+
 import React, { Component } from 'react';
 import { v4 } from 'uuid';
-
 class Canvas extends Component {
   constructor(props) {
     super(props);
-
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.endPaintEvent = this.endPaintEvent.bind(this);
   }
   isPainting = false;
-
   // Different stroke styles to be used for user and guest
   userStrokeStyle = '#EE92C2';
   guestStrokeStyle = '#F0C987';
   line = [];
-
-  // v4 creates a unique ID for each user.  We use this since there is
-  // no auth to tell users apart
+  // v4 creates a unique id for each user. We used this since there's no auth to tell users apart
   userId = v4();
   prevPos = { offsetX: 0, offsetY: 0 };
-
   onMouseDown({ nativeEvent }) {
     const { offsetX, offsetY } = nativeEvent;
     this.isPainting = true;
     this.prevPos = { offsetX, offsetY };
   }
-
   onMouseMove({ nativeEvent }) {
     if (this.isPainting) {
       const { offsetX, offsetY } = nativeEvent;
@@ -38,7 +33,7 @@ class Canvas extends Component {
       };
       // Add the position to the line array
       this.line = this.line.concat(positionData);
-      this.isPainting(this.prevPos, offSetData, this.userStrokeStyle);
+      this.paint(this.prevPos, offSetData, this.userStrokeStyle);
     }
   }
   endPaintEvent() {
@@ -52,11 +47,11 @@ class Canvas extends Component {
     const { offsetX: x, offsetY: y } = prevPos;
     this.ctx.beginPath();
     this.ctx.strokeStyle = strokeStyle;
-    // Move the prePosition of the mouse
+    // Move the the prevPosition of the mouse
     this.ctx.moveTo(x, y);
     // Draw a line to the current position of the mouse
     this.ctx.lineTo(offsetX, offsetY);
-    // Visualize the line using strokeStyle
+    // Visualize the line using the strokeStyle
     this.ctx.stroke();
     this.prevPos = { offsetX, offsetY };
   }
@@ -77,7 +72,7 @@ class Canvas extends Component {
     this.line = [];
   }
   componentDidMount() {
-    // Here we set up the properties of the canvas element
+    // Here we set up the properties of the canvas element.
     this.canvas.width = 1000;
     this.canvas.height = 800;
     this.ctx = this.canvas.getContext('2d');
@@ -85,11 +80,10 @@ class Canvas extends Component {
     this.ctx.lineCap = 'round';
     this.ctx.lineWidth = 5;
   }
-
   render() {
     return (
-      <Canvas
-        // We use the ref attribute to get direct access to the canvas element
+      <canvas
+        // We use the ref attribute to get direct access to the canvas element.
         ref={ref => (this.canvas = ref)}
         style={{ background: 'black' }}
         onMouseDown={this.onMouseDown}
@@ -100,5 +94,4 @@ class Canvas extends Component {
     );
   }
 }
-
 export default Canvas;
