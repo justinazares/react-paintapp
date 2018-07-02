@@ -1,11 +1,11 @@
-// server.js
-
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const Pusher = require('pusher');
+
 const app = express();
 const port = process.env.PORT || 4000;
+
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,
   key: process.env.PUSHER_KEY,
